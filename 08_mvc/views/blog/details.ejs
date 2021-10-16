@@ -1,0 +1,31 @@
+<html>
+    <%- include("../partials/head.ejs") %>
+    <body>
+        <%- include("../partials/header.ejs") %>
+        <div class="details content">
+            <h2><%=blog.title%></h2>
+            <p><%=blog.body%></p>
+            <a class="delete" data-doc="<%= blog._id %>">
+                <img src="/trashcan.svg" alt="delete icon">
+            </a>
+        </div>
+        <%- include("../partials/footer.ejs") %>
+        <script>
+            const deleteBtn = document.querySelector("a.delete");
+            
+            deleteBtn.addEventListener("click", (event) => {
+                const endpoint = `/blogs/${deleteBtn.dataset.doc}`;
+                fetch(endpoint, { method: "DELETE" })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        window.location.href = data.redirect;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            })
+        </script>
+    </body>
+</html>
